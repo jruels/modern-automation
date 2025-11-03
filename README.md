@@ -1,6 +1,6 @@
-# Automation Developer
+# Modern Automation with Terraform and Ansible
 
-This site includes the labs for the Automation Developer class.
+This site includes the labs for the Modern Automation with Terraform and Ansible class.
 
 ## Labs
 [Windows VM information](VM_access.md)   
