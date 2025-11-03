@@ -1,28 +1,23 @@
-| Name                     | Username     | Virtual Machine Password | Virtual Machine Portal |
-|:-------------------------|:-------------|:-------------------------|:-----------------------|
-| Marcelo Kurtz            | WSAUTO25-31  | TEKwsauto25!             | [Ablaze Portal](https://my.ablazedesktop.com) |
-| Anandan                  | WSAUTO25-32  | TEKwsauto25!             |                        |
-| Orlando Suarez           | WSAUTO25-33  | TEKwsauto25!             |                        |
-| Hyundeok Park            | WSAUTO25-34  | TEKwsauto25!             |                        |
-| Naveen Palla             | WSAUTO25-35  | TEKwsauto25!             |                        |
-| Dan                      | WSAUTO25-36  | TEKwsauto25!             |                        |
-| Bill Stephens            | WSAUTO25-37  | TEKwsauto25!             |                        |
-| Deepa                    | WSAUTO25-38  | TEKwsauto25!             |                        |
-| Fredrick Ketangenyi      | WSAUTO25-39  | TEKwsauto25!             |                        |
-| Caroline Mazariegos      | WSAUTO25-40  | TEKwsauto25!             |                        |
-| Fawaz Adetunji           | WSAUTO25-41  | TEKwsauto25!             |                        |
-| Matthew Rodriguez        | WSAUTO25-42  | TEKwsauto25!             |                        |
-| Kouh Ho                  | WSAUTO25-43  | TEKwsauto25!             |                        |
-| John L Martin            | WSAUTO25-44  | TEKwsauto25!             |                        |
-| Isha Patel               | WSAUTO25-45  | TEKwsauto25!             |                        |
-| Debarshi Chakma          | WSAUTO25-46  | TEKwsauto25!             |                        |
-| Karl Grissom             | WSAUTO25-47  | TEKwsauto25!             |                        |
-| Yanmife Atewogbola       | WSAUTO25-48  | TEKwsauto25!             |                        |
-| Vincent Ho               | WSAUTO25-49  | TEKwsauto25!             |                        |
-| Syed Mumshad             | WSAUTO25-50  | TEKwsauto25!             |                        |
-| Venkata Parcha           | WSAUTO25-51  | TEKwsauto25!             |                        |
-| Jorge Philipps           | WSAUTO25-52  | TEKwsauto25!             |                        |
-| Sarala Katikala          | WSAUTO25-53  | TEKwsauto25!             |                        |
-| Yash Thaker              | WSAUTO25-54  | TEKwsauto25!             |                        |
-| Ramakanth Vogirala       | WSAUTO25-55  | TEKwsauto25!             |                        |
-| Instructor               | WSAUTO25-56  | TEKwsauto25!             |                        |
+| Name                      | Username     | Virtual Machine Password | Virtual Machine Portal |
+|:---------------------------|:-------------|:-------------------------|:-----------------------|
+| Supulsiri Liyanaarachchi   | WSAUTO25-01  | tekWSAUTO25!             | [Ablaze Portal](https://my.ablazedesktop.com) |
+| Christopher Carver         | WSAUTO25-02  | tekWSAUTO25!             |                        |
+| Leonard Burt               | WSAUTO25-03  | tekWSAUTO25!             |                        |
+| Lam Ho                     | WSAUTO25-04  | tekWSAUTO25!             |                        |
+| Andrew Mueller             | WSAUTO25-05  | tekWSAUTO25!             |                        |
+| Yunkuan Liao               | WSAUTO25-06  | tekWSAUTO25!             |                        |
+| Curtis Grimsley            | WSAUTO25-07  | tekWSAUTO25!             |                        |
+| Jyothishwar Sama           | WSAUTO25-08  | tekWSAUTO25!             |                        |
+| Lovejit Singh              | WSAUTO25-09  | tekWSAUTO25!             |                        |
+| Samuel Samiezadeh          | WSAUTO25-10  | tekWSAUTO25!             |                        |
+| Pushkar Gahlaut            | WSAUTO25-11  | tekWSAUTO25!             |                        |
+| Amruta Shinde              | WSAUTO25-12  | tekWSAUTO25!             |                        |
+| Damian Williams            | WSAUTO25-13  | tekWSAUTO25!             |                        |
+| Kumari Debarchana Singh    | WSAUTO25-14  | tekWSAUTO25!             |                        |
+| Prabir Maiti               | WSAUTO25-15  | tekWSAUTO25!             |                        |
+| Pradeep Malhotra           | WSAUTO25-16  | tekWSAUTO25!             |                        |
+| Donald Dangelo             | WSAUTO25-17  | tekWSAUTO25!             |                        |
+| Tamsir Rilley              | WSAUTO25-18  | tekWSAUTO25!             |                        |
+| Gunasekaran Kalimuthu      | WSAUTO25-19  | tekWSAUTO25!             |                        |
+| Caroline Rogers            | WSAUTO25-20  | tekWSAUTO25!             |                        |
+| Instructor                 | WSAUTO25-21  | tekWSAUTO25!             |                        |
