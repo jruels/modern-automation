@@ -57,21 +57,23 @@ Publishing modules to the HCP Terraform private registry allows teams to reuse, 
 - In the HCP Terraform UI, navigate to your organization’s **Registry** section.
 - Click **Publish** and select **Module**.
 - Choose your VCS provider and select the `terraform-aws-s3-bucket-{your-initials}` repository.
-- Follow the prompts to configure publishing (tag-based), and select Publish Module.
+- Follow the prompts to configure publishing:
+    - Module name: `s3-bucket-{your-initials}`
+    - Provider: `aws`
+- Select **Publish Module**.
 
 ---
 
 #### 5. Consume a Specific Module Version
 
-- In your `learn-terraform-variables` repository (which you forked and cloned in the **hcp-tf-setup** lab and have been using in the **hcp-tf-modify** lab), add a module block to your configuration to consume the published S3 bucket module:
+- In your `learn-terraform-variables` repository (which you forked and cloned in the **hcp-tf-setup** lab and have been using in the **hcp-tf-modify** lab), add a module block to your configuration to consume the published S3 bucket module. Copy the block from the **Usage Instructions** on the right side of the Registry module page. An example is below (replace `bucket_name` with a unique string): 
   ```hcl
   module "s3_bucket" {
-    source  = "app.terraform.io/<YOUR_ORG>/s3-bucket-{your-initials}/aws"
+    source  = "app.terraform.io/policy-as-code-training/s3-bucket-{your-initials}/aws"
     version = "1.0.0"
     bucket_name = "my-bucket"
   }
   ```
-- Replace `<YOUR_ORG>` with your actual HCP Terraform organization name. The module name (`s3-bucket-{your-initials}`) and provider (`aws`) should match what you published in the registry.
 - Save your changes, then commit and push them to your `learn-terraform-variables` repository:
   ```sh
   git add .
