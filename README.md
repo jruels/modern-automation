@@ -21,7 +21,7 @@ Lab 4: [Terraform Multi-Resource Deployment](labs/tf-more-variables/index.md)
 Lab 5: [Strings, bool, and numbers](labs/tf-even-more-variables)   
 Lab 6: [HCP Terraform Setup](labs/hcp-tf-setup/index.md)   
 Lab 7: [HCP Terraform Modify Infrastructure](labs/hcp-tf-modify/index.md)   
-Lab 8: [Write your own module](labs/tf-write-module)
+Lab 8: [Write your own module](labs/tf-write-module)   
 Lab 9: [HCP Terraform Publish Module](labs/hcp-tf-publish-module/index.md)   
 
 ### Day 3
