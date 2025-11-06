@@ -27,4 +27,7 @@ Lab 9: [HCP Terraform Publish Module](labs/hcp-tf-publish-module/index.md)
 ### Day 3
 Lab 10: [HCP Terraform Workspace health and Drift Detection](labs/hcp-terraform-health-assessments/index.md)  
 Lab 11: [HCP Terraform & Vault Integration](labs/hcp-vault-setup-configure/index.md)   
-
+Lab 12: [Connect to Ansible Controller](labs/setup/index.md)    
+Lab 13: [Ansible inventory](labs/inventory)    
+Lab 14: [Ansible ad-hoc](labs/ad-hoc)    
+Lab 15: [Ansible playbook fundamentals](labs/playbook-fun)    
