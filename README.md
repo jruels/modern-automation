@@ -38,7 +38,7 @@ Lab 17: [AAP inventory and credentials](labs/aap-inventory-creds-ad-hoc/index_sh
 Lab 18: [AAP projects and jobs](labs/aap-projects-templates-jobs/index_shared.md)   
 
 ### Day 5
-Lab 19: [Ansible Playbook Error Handling](labs/error-handling/)   
+Lab 19: [Ansible Playbook Error Handling](labs/error-handling/error_handling_intro.md)   
 Lab 20: [Ansible Templating](labs/templates/templates_intro.md)   
 Lab 21: [Write an Ansible module](labs/gh_module/)   
 Lab 22: [AAP Surveys](labs/aap-surveys/)   
