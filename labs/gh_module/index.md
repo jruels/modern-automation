@@ -26,8 +26,16 @@ Generate Personal Access Token to authenticate from Ansible to GitHub.
   Make sure you save your token because it will not be shown again.
 
 
+## Run the following in the VS Code session connected to your Ansible Controller VM:
+
 
 ## Secure the Token with Ansible Vault
+
+Create a working directory 
+```
+mkdir ~/lab-github
+cd ~/lab-github
+```
 
 Before proceeding, we need to secure the GitHub token using **Ansible Vault**.
 
@@ -75,9 +83,10 @@ Create the following directory / file structure:
 
 
 ```
-play.yml
-[library]
-  |- github_repo.py
+lab-github/
+├── play.yml
+└── library/
+    └── github_repo.py
 ```
 
 The custom module lives in the `library` directory and has the name we will be calling from our playbook `github_repo`. 
@@ -198,18 +207,17 @@ Update the playbook to use the vault encrypted key, and add more fields.
   tasks:
     - name: Create a github Repo
       github_repo:
-        github_auth_key: {% raw %} "{{ github_token }}" {% endraw %}
-          username: "YOUR GITHUB USERNAME HERE"
-          name: "Hello-World"
-          description: "This is your first repository"
-          private: yes
-          has_issues: no
-          has_wiki: no
-          has_downloads: no
-         state: present
+        github_auth_key: "{{ github_token }}"
+        username: "YOUR GITHUB USERNAME HERE"
+        name: "Hello-World"
+        description: "This is your first repository"
+        private: yes
+        has_issues: no
+        has_wiki: no
+        has_downloads: no
+        state: present
       register: result
-    - debug: var=result
-    
+    - debug: var=result   
 ```
 
 Run the playbook and it will display a dictionary of inputs passed in. 
