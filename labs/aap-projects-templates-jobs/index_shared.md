@@ -17,7 +17,7 @@ A playbook to manage users, and groups. The playbook is `create_user.yml`
 ```yaml
 ---
 - name: Ansible Create user functionlity module demo
-  hosts: web # Defining the remote server inventory host group
+  hosts: all 
   become: yes
   # Defining the remote server where the ansible create user module
   # will manage the objects
