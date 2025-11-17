@@ -1,23 +1,23 @@
-| Name                      | Username     | Virtual Machine Password | Virtual Machine Portal |
-|:---------------------------|:-------------|:-------------------------|:-----------------------|
-| Supulsiri Liyanaarachchi   | WSAUTO25-01  | tekWSAUTO25!             | [Ablaze Portal](https://my.ablazedesktop.com) |
-| Christopher Carver         | WSAUTO25-02  | tekWSAUTO25!             |                        |
-| Leonard Burt               | WSAUTO25-03  | tekWSAUTO25!             |                        |
-| Lam Ho                     | WSAUTO25-04  | tekWSAUTO25!             |                        |
-| Andrew Mueller             | WSAUTO25-05  | tekWSAUTO25!             |                        |
-| Yunkuan Liao               | WSAUTO25-06  | tekWSAUTO25!             |                        |
-| Curtis Grimsley            | WSAUTO25-07  | tekWSAUTO25!             |                        |
-| Jyothishwar Sama           | WSAUTO25-08  | tekWSAUTO25!             |                        |
-| Lovejit Singh              | WSAUTO25-09  | tekWSAUTO25!             |                        |
-| Samuel Samiezadeh          | WSAUTO25-10  | tekWSAUTO25!             |                        |
-| Pushkar Gahlaut            | WSAUTO25-11  | tekWSAUTO25!             |                        |
-| Amruta Shinde              | WSAUTO25-12  | tekWSAUTO25!             |                        |
-| Damian Williams            | WSAUTO25-13  | tekWSAUTO25!             |                        |
-| Kumari Debarchana Singh    | WSAUTO25-14  | tekWSAUTO25!             |                        |
-| Prabir Maiti               | WSAUTO25-15  | tekWSAUTO25!             |                        |
-| Pradeep Malhotra           | WSAUTO25-16  | tekWSAUTO25!             |                        |
-| Donald Dangelo             | WSAUTO25-17  | tekWSAUTO25!             |                        |
-| Tamsir Rilley              | WSAUTO25-18  | tekWSAUTO25!             |                        |
-| Gunasekaran Kalimuthu      | WSAUTO25-19  | tekWSAUTO25!             |                        |
-| Caroline Rogers            | WSAUTO25-20  | tekWSAUTO25!             |                        |
-| Instructor                 | WSAUTO25-21  | tekWSAUTO25!             |                        |
+| Name                     | Username     | Virtual Machine Password | Virtual Machine Portal |
+|:-------------------------|:-------------|:-------------------------|:-----------------------|
+| Brian Christman          | WSAUTO25-01  | TEKwsauto25!             | [Ablaze Portal](https://my.ablazedesktop.com) |
+| Sudipto Chattopadhayay  | WSAUTO25-02  | TEKwsauto25!             |                        |
+| Todd Eberhardt           | WSAUTO25-03  | TEKwsauto25!             |                        |
+| Lingham Lakshmaiah       | WSAUTO25-04  | TEKwsauto25!             |                        |
+| Thiagarajan Lakshminarayanan | WSAUTO25-05 | TEKwsauto25!           |                        |
+| Matthew Oyales           | WSAUTO25-06  | TEKwsauto25!             |                        |
+| Matthew Solomon          | WSAUTO25-07  | TEKwsauto25!             |                        |
+| Steve Fluge              | WSAUTO25-08  | TEKwsauto25!             |                        |
+| Greg C Peterson          | WSAUTO25-09  | TEKwsauto25!             |                        |
+| Alejandro Galo           | WSAUTO25-10  | TEKwsauto25!             |                        |
+| Alexander Barney         | WSAUTO25-11  | TEKwsauto25!             |                        |
+| Jacob Salerno            | WSAUTO25-12  | TEKwsauto25!             |                        |
+| Andrew Drake             | WSAUTO25-13  | TEKwsauto25!             |                        |
+| Elina Shkodnik           | WSAUTO25-14  | TEKwsauto25!             |                        |
+| Tapan Pyakuryal          | WSAUTO25-15  | TEKwsauto25!             |                        |
+| Nicholas Pickett         | WSAUTO25-16  | TEKwsauto25!             |                        |
+| Satish Yarramneni        | WSAUTO25-17  | TEKwsauto25!             |                        |
+| Daisy Shu                | WSAUTO25-18  | TEKwsauto25!             |                        |
+| Charlotte Demas          | WSAUTO25-19  | TEKwsauto25!             |                        |
+| Meenakshi Nagpal         | WSAUTO25-20  | TEKwsauto25!             |                        |
+| Instructor               | WSAUTO25-21  | TEKwsauto25!             |                        |
