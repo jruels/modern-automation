@@ -26,6 +26,13 @@ Publishing modules to the HCP Terraform private registry allows teams to reuse, 
   git clone https://github.com/your-username/terraform-aws-s3-bucket-{your-initials}.git
   cd terraform-aws-s3-bucket-{your-initials}
   ```
+Create a new folder for the module code `tf-publish-module`. Enter the directory
+- Clone the class repository: 
+    ```
+    cd tf-publish-module
+    git clone https://github.com/jruels/modern-automation
+    cd modern-automation/hcp-tf-publish-module
+    ```
 - Copy the provided files (`main.tf`, `variables.tf`, `outputs.tf`, `README.md`) from the `hcp-tf-publish-module` lab folder into your new repository directory.
 
 - Review the files and make any necessary adjustments (such as updating the README usage example with your organization name).
