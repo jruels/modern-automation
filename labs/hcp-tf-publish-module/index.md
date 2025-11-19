@@ -31,7 +31,7 @@ Create a new folder for the module code `tf-publish-module`. Enter the directory
     ```
     cd tf-publish-module
     git clone https://github.com/jruels/modern-automation
-    cd modern-automation/hcp-tf-publish-module
+    cd modern-automation/labs/hcp-tf-publish-module
     ```
 - Copy the provided files (`main.tf`, `variables.tf`, `outputs.tf`, `README.md`) from the `hcp-tf-publish-module` lab folder into your new repository directory.
 
