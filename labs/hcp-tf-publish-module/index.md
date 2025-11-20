@@ -21,19 +21,19 @@ Publishing modules to the HCP Terraform private registry allows teams to reuse, 
 - Choose a provider and module name. For this lab, we'll use AWS and create a simple S3 bucket module.
 - Name your repository using the convention: `terraform-aws-s3-bucket-{your-initials}`.
 - **First, create a new repository in your VCS provider (e.g., GitHub) named `terraform-aws-s3-bucket-{your-initials}`.**
-- On your local machine, clone the repository:
+- In VS Code, Create a new folder in your `terraform` working directory `tf-publish-module`. Enter the directory
+
+- Clone the repository:
   ```sh
+  cd tf-publish-module
   git clone https://github.com/your-username/terraform-aws-s3-bucket-{your-initials}.git
-  cd terraform-aws-s3-bucket-{your-initials}
   ```
-Create a new folder for the module code `tf-publish-module`. Enter the directory
 - Clone the class repository: 
-    ```
-    cd tf-publish-module
+    ```sh
     git clone https://github.com/jruels/modern-automation
     cd modern-automation/labs/hcp-tf-publish-module
     ```
-- Copy the provided files (`main.tf`, `variables.tf`, `outputs.tf`, `README.md`) from the `hcp-tf-publish-module` lab folder into your new repository directory.
+- Copy the provided files (`main.tf`, `variables.tf`, `outputs.tf`, `README.md`) from the `modern-automation/labs/hcp-tf-publish-module` lab folder into your new module repository directory.
 
 - Review the files and make any necessary adjustments (such as updating the README usage example with your organization name).
 
@@ -41,8 +41,9 @@ Create a new folder for the module code `tf-publish-module`. Enter the directory
 
 #### 2. Push the Module to a VCS Provider
 
-- Commit and push your changes:
+- Enter your module directory and commit and push your changes:
   ```sh
+  cd tf-publish-module/terraform-aws-s3-bucket-{your-initials}
   git add .
   git commit -m "Initial commit: basic S3 bucket module"
   git push -u origin main
