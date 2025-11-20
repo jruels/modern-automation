@@ -61,7 +61,7 @@ Inside the new directory, create an `inventory` file
 
 ### Define Variables for `webservers` with their accompanying values
 
-1. In the `group_vars` directory, edit the `webservers` file:
+1. In the `group_vars` directory, create a `webservers` file:
 
 4. Paste in the following:
 
