@@ -6,21 +6,13 @@ Your coworker has created a simple script and an Ansible playbook to create an a
 
 You will create the inventory file to complete the backup strategy.
 
-### Prerequisites
-
-Install the community module collection
-
-```
-ansible-galaxy collection install community.general
-```
-
-
-
 ### Configure the `media` Host Group to Contain `media1` and `media2`
 
 In VS Code, create a new lab directory named `lab-inventory`
 
-Inside the new directory, create an `inventory` file
+**NOTE: All directories and files in this lab must be inside the `lab-inventory` directory**
+
+Create an `inventory` file
 
 1. Paste in the following:
 
@@ -47,17 +39,12 @@ Inside the new directory, create an `inventory` file
 
 ### Configure the `webservers` Host Group to contain the hosts `web1` and `web2`
 
-1. In the lab directory (`lab-inventory`), update the `inventory` file.
-
-3. Beneath `media2`, paste in the following:
-
+1. Append the following to `inventory`  
    ```
    [webservers] 
    web1 ansible_host=<IP of TargetNode-1 from /home/ansible/inventory/inventory.yaml>
    web2 ansible_host=<IP of TargetNode-2 from /home/ansible/inventory/inventory.yaml>
    ```
-
-
 
 ### Define Variables for `webservers` with their accompanying values
 
