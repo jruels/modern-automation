@@ -19,12 +19,12 @@ In the Remote Explorer, hover your mouse cursor over **SSH**, click on the gear 
 
 
 ### Add the SSH configuration for the lab servers.
-Add the following lines to the SSH configuration file, replacing `<IP of Tower server from the spreadsheet>` with the actual IP address of your Tower.
+Replace the following lines in the SSH configuration file, replacing `<IP of Tower server from the spreadsheet>` with the actual IP address of your Tower.
 
 ```plaintext
 Host tower
   HostName <IP of Tower server from the spreadsheet>
-  IdentityFile ~/Downloads/repos/automation-dev/keys/lab.pem"
+  IdentityFile ~/Downloads/repos/automation-dev/keys/lab.pem
   User ansible
 ```
 
