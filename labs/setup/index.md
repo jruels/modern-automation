@@ -24,7 +24,7 @@ Add the following lines to the SSH configuration file, replacing `<IP of Tower s
 ```plaintext
 Host tower
   HostName <IP of Tower server from the spreadsheet>
-  IdentityFile "<PATH_TO_AUTOMATION_DEV_REPO>/keys/lab.pem"
+  IdentityFile ~/Downloads/repos/automation-dev/keys/lab.pem"
   User ansible
 ```
 
