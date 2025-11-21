@@ -87,7 +87,7 @@ Go to **Resources → Projects** in the side menu view, and click the **Add** bu
 * **Name**: Ansible Workshop Examples-[your initials]
 * **Organization**: Default
 * **Execution Environment**: Default execution environment
-* **Source Control Credential Type**: Git
+* **Source Control Type**: Git
 
 Now fill in the **Type Details**: 
 
