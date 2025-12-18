@@ -5,7 +5,7 @@
 ### Step 1: Clone the repo
 
 1. Open a new Visual Studio Code window.
-2. In Visual Studio Code, click **Clone Repository** and paste `https://github.com/modern-automation`
+2. In Visual Studio Code, click **Clone Repository** and paste `https://github.com/jruels/modern-automation`
 3. Hit **Enter**, and in the pop-up window, browse to `C:\Users\tekstudent\Downloads\repos`
 4. Click **Select as repository destination**
 5. When prompted to open the cloned repo, choose **Open**.
