@@ -57,9 +57,9 @@ In Ansible Automation Platform, create a new project with the following:
 
 
 
-### Create templates
+### Create Job templates
 
-Create a template with the following to simulate a down service: 
+Create a job template with the following to simulate a down service: 
 
 * Name: **service_down-[your initials]**
 * Inventory: **First Inventory-[your initials]**
@@ -72,7 +72,7 @@ Create a template with the following to simulate a down service:
 
 
 
-Create a template with the following to restore the service: 
+Create a job template with the following to restore the service: 
 
 * Name: **service_up-[your initials]**
 * Inventory: **First Inventory-[your initials]**
@@ -221,7 +221,7 @@ Now, create a project with your `ansible-working` repository
 
 ## Run the playbook 
 
-In Automation Platform, create a new template with the following: 
+In Automation Platform, create a new job template with the following: 
 
 * Name: **error_handling-[your initials]**
 * Inventory: **First Inventory-[your initials]**
