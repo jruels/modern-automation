@@ -8,7 +8,7 @@ Input variables make Terraform configurations more flexible by defining values t
 ## Setup lab files 
 ### Create the Lab Directory
 
-1. In **Visual Studio Code**, open the working directory created in the previous lab (`YYYYMMDD/terraform`).
+1. In **Visual Studio Code**, open the working directory created in the previous lab `terraform`.
 2. Right-click in the **Explorer** pane and select **New Folder**.
 3. Name the folder `tf-lab3`.
 
