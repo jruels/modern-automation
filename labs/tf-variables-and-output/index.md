@@ -1,4 +1,4 @@
-# Terraform Variables&#x20;
+# Terraform Variables;
 
 ## Overview
 
@@ -8,7 +8,7 @@ In this lab, you will update the existing `main.tf` file to use variables.
 
 ### Create the Lab Directory
 
-1. In **Visual Studio Code**, open the working directory created in the previous lab (`YYYYMMDD/terraform`).
+1. In **Visual Studio Code**, open the working directory created in the previous lab (`terraform`).
 2. Right-click in the **Explorer** pane and select **New Folder**.
 3. Name the folder `tf-lab2`.
 4. Copy `main.tf` from `tf-lab1` to `tf-lab2`:
