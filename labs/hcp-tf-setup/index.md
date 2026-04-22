@@ -17,11 +17,11 @@ HCP Terraform runs Terraform operations and stores state remotely, providing a s
 
 ### Hands-On Tasks
 
-#### 1. Create a GitHub Account (if you don't have one)
+#### 1. Confirm GitHub Account 
 
-1. Go to [https://github.com/join](https://github.com/join) in your web browser.
-2. Fill out the registration form to create a free personal GitHub account. Use a personal email account. **Not Bank of America**. Follow the prompts to verify your email and complete the setup.
-3. Once your account is created and verified, sign in to GitHub.
+The instructor has logged VS Code and Google Chrome into GitHub using the class accounts. 
+
+1. Open the Google Chrome browser and confirm you are logged into [GitHub](https://github.com). 
 
 #### 2. Fork and Clone the Example Terraform Configuration
 
