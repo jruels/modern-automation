@@ -27,9 +27,10 @@ The instructor has logged VS Code and Google Chrome into GitHub using the class 
 
 1. Go to [https://github.com/jruels/learn-terraform-variables](https://github.com/jruels/learn-terraform-variables) in your web browser.
 2. Click the **Fork** button in the top right corner and fork the repository to your own GitHub account.
-3. Once forked, clone your forked repository to your local machine:
+3. Once forked, clone your forked repository.
    ```sh
-   git clone https://github.com/<your-username>/learn-terraform-variables.git
+   cd ~/Downloads/repos
+   git clone https://github.com/<your-github-username>/learn-terraform-variables.git
    cd learn-terraform-variables
    ```
 4. All subsequent commands in this lab should be run from within the `learn-terraform-variables` directory.
@@ -51,13 +52,13 @@ You will be prompted to confirm that you want to authenticate. Type `yes` and pr
 
 #### 5. Generate an API Token
 
-A browser window will open to the HCP Terraform login screen at https://app.terraform.io. Enter the HCP terraform credentials you have been provided, enter a token name (or use the default), then click **Create API token** to generate your authentication token.
+A browser window will open to the HCP Terraform login screen at https://app.terraform.io. Enter the HCP terraform credentials you have been provided. At this point, it should have you generate a token. If it doesn't, go to the [Account Settings](https://app.terraform.io/app/settings/tokens) page, click create a token and enter a token name, then click **Create API token** to generate your authentication token.
 
 If your browser does not open automatically, copy and paste the provided URL from your terminal into your browser.
 
 #### 6. Add the Token to the CLI
 
-Copy the generated token and paste it into your terminal when prompted:
+Copy the generated token and paste it into your terminal when prompted. You will not see any output, so right click once to paste, and then hit enter:
 
 ```
 Token for app.terraform.io:
@@ -91,14 +92,6 @@ You are now authenticated and ready to perform remote operations with HCP Terraf
 
 ---
 
-### Reflection & Challenge
-
-- **Reflection:** Why is it important to use API tokens and secure authentication when working with cloud-based infrastructure tools?
-- **Challenge:**
-  - Explore the `C:\Users\<username>\AppData\Roaming\terraform.d\credentials.tfrc.json` file and consider how you would rotate or revoke tokens if needed.
-
----
-
 You have now learned how to securely authenticate your Terraform CLI with HCP Terraform, enabling safe and collaborative remote infrastructure management. 
 
 ---
@@ -109,14 +102,16 @@ You have now learned how to securely authenticate your Terraform CLI with HCP Te
 
 Workspaces in HCP Terraform are used to organize and manage collections of infrastructure resources. Each workspace contains its own state, variables, and configuration, allowing you to separate environments, projects, or components for better collaboration and control. Creating a workspace using the CLI-driven workflow ensures your local configuration is linked to a remote workspace for centralized state management and team access.
 
-Create a workspace using the format "tf-vault-qa-{your-initials}"
-
 ---
 
 #### 1. Update Your Configuration with a Cloud Block
 
+In VS Code, open C:\users\tekstudent\Downloads\repos\learn-terraform-variables.
+
 Edit your `main.tf` file to include a `cloud` block specifying your HCP Terraform organization and the desired workspace name. This tells Terraform where to create and manage your workspace.
 
+REMEMBER TO REPLACE `{your-initials}` with your actual initials. 
+e.g `tf-vault-qa-jrs`
 
 Example:
 
