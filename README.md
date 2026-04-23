@@ -23,7 +23,7 @@ Lab 6: [HCP Terraform Modify Infrastructure](labs/hcp-tf-modify/index.md)
 Lab 7: [Write your own module](labs/tf-write-module/index.md)   
 Lab 8: [HCP Terraform Publish Module](labs/hcp-tf-publish-module/index.md)   
 
-### Day 3
+### Day 4
 Lab 11: [Connect to Ansible Controller](labs/setup/index.md)   
 Lab 12: [Ansible inventory](labs/inventory/index.md)  
 Lab 13: [Ansible ad-hoc](labs/ad-hoc/index.md)   
