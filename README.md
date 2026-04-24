@@ -30,7 +30,7 @@ Lab 11: [Ansible ad-hoc](labs/ad-hoc/index.md)
 Lab 12: [Ansible playbook fundamentals](labs/playbook-fun/index.md)  
 
 ### Day 5
-Lab 13: [Ansible roles](labs/roles)   
+Lab 13: [Ansible roles](labs/roles/roles_intro.md)   
 Lab 14: [AAP inventory and credentials](labs/aap-setup-2.6/index_shared.md)   
 Lab 15: [AAP projects and jobs](labs/aap-projects-templates-jobs/index_shared.md)   
 Lab 16: [Ansible Playbook Error Handling](labs/error-handling/error_handling_intro.md)   
