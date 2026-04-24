@@ -24,7 +24,15 @@ Lab 7: [Write your own module](labs/tf-write-module/index.md)
 Lab 8: [HCP Terraform Publish Module](labs/hcp-tf-publish-module/index.md)   
 
 ### Day 4
-Lab 11: [Connect to Ansible Controller](labs/setup/index.md)   
-Lab 12: [Ansible inventory](labs/inventory/index.md)  
-Lab 13: [Ansible ad-hoc](labs/ad-hoc/index.md)   
-Lab 14: [Ansible playbook fundamentals](labs/playbook-fun/index.md)  
+Lab 9: [Connect to Ansible Controller](labs/setup/index.md)   
+Lab 10: [Ansible inventory](labs/inventory/index.md)  
+Lab 11: [Ansible ad-hoc](labs/ad-hoc/index.md)   
+Lab 12: [Ansible playbook fundamentals](labs/playbook-fun/index.md)  
+
+### Day 5
+Lab 13: [Ansible roles](labs/roles)   
+Lab 14: [AAP inventory and credentials](labs/aap-inventory-creds-ad-hoc/index_shared.md)   
+Lab 15: [AAP projects and jobs](labs/aap-projects-templates-jobs/index_shared.md)   
+Lab 16: [Ansible Playbook Error Handling](labs/error-handling/error_handling_intro.md)   
+Lab 17: [Ansible Templating](labs/templates/templates_intro.md)   
+Lab 18: [Write an Ansible module](labs/gh_module/)   
