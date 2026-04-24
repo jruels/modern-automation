@@ -9,15 +9,12 @@ This exercise will cover
   - Ansible Automation Controller **Credentials**
 - Running ad hoc commands via the Ansible Automation Platform web UI
 
-> **NOTE**: Ansible Automation Platform 2.5 introduced a redesigned, unified **Platform Gateway** UI that AAP 2.6 continues to use. The old *Resources* menu is gone — Controller features now live under **Automation Execution**. Buttons that used to say *Add* are labeled **Create** (for example, **Create inventory**, **Create host**, **Create credential**). The ad-hoc command flow is now a four-step wizard ending in **Finish**.
 
 ### Log in to AAP
 
 Access the Dashboard at the URL from the spreadsheet.
 
 Log in to the dashboard with the username and the password from the credentials spreadsheet AAP tab.
-
-After login, you land on the platform **Overview** page. The left navigation shows top-level sections such as **Automation Execution**, **Automation Decisions**, **Automation Content**, and **Access Management**.
 
 ## Create an Inventory
 
