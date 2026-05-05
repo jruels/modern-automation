@@ -23,7 +23,7 @@
 
 ### **Step 2: Use AWS Configure**
 
-1. Run aws configure in the Visual Studio Code terminal. 
+1. Run `aws configure` in the Visual Studio Code terminal. 
 2. Supply the required information.
    * Credentials 
    * Region = `us-west-1`
