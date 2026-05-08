@@ -402,7 +402,7 @@ Update the playbook with the following task to delete the repository. Remember t
 ```yml
     - name: Delete GitHub Repo
       github_repo:
-        github_auth_key: {% raw %} "{{github_token}}" {% endraw %}
+        github_auth_key:  "{{github_token}}"
         username: "YOUR GITHUB USERNAME HERE"
         name: "Hello-World"
         state: absent
