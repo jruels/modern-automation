@@ -223,7 +223,7 @@ Update the playbook to use the vault encrypted key, and add more fields.
 Run the playbook and it will display a dictionary of inputs passed in. 
 
 ```sh
-ansible-playbook play.yml
+ansible-playbook --ask-vault-pass play.yml
 ```
 
 
