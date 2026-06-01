@@ -8,6 +8,7 @@ This site includes the labs for the Modern Automation with Terraform and Ansible
 
 ### Day 1
 Lab 1: [Python guessing game](labs/py_guessing-game/index.md)    
+Lab 1a: [Intro Python guessing game](labs/py_guessing-game/index_intro.md)    
 Lab 2: [Using Python to interact with APIs](labs/py-apis/index.md)      
 Lab 3: [AWS Setup](labs/setup.md)      
 
