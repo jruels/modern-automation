@@ -22,13 +22,13 @@ In this lab you will build a number-guessing game from scratch using Python. By 
 
 ## Step 1 — Create the file
 
-Create a new file called `guessing_game.py` in any folder you like.
+Create a new file called `guessing_game.py` in VS Code:
 
-```bash
-touch guessing_game.py
-```
+1. Open VS Code.
+2. Go to **File → New File** (or press `Ctrl+N` / `Cmd+N` on macOS).
+3. Save it immediately with **File → Save As** (or `Ctrl+Shift+S` / `Cmd+Shift+S`) and name it `guessing_game.py`.
 
-Open it in your editor and leave it blank for now.
+Leave the file blank for now.
 
 ---
 
