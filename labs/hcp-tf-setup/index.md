@@ -110,8 +110,8 @@ In VS Code, open C:\users\tekstudent\Downloads\repos\learn-terraform-variables.
 
 Edit your `main.tf` file to include a `cloud` block specifying your HCP Terraform organization and the desired workspace name. This tells Terraform where to create and manage your workspace.
 
-REMEMBER TO REPLACE `{your-initials}` with your actual initials. 
-e.g `tf-vault-qa-jrs`
+REMEMBER TO REPLACE `{your-initials}` and `{todays-date}` with actual values. 
+e.g `tf-vault-qa-jrs-20260603`
 
 Example:
 
@@ -120,7 +120,7 @@ terraform {
   cloud {
     organization = "policy-as-code-training"
     workspaces {
-      name = "tf-vault-qa-{your-initials}"
+      name = "tf-vault-qa-{your-initials}-{todays-date}"
     }
   }
   required_providers {
