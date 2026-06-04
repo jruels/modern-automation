@@ -29,6 +29,7 @@ Lab 9: [Connect to Ansible Controller](labs/setup/index.md)
 Lab 10: [Ansible inventory](labs/inventory/index.md)  
 Lab 11: [Ansible ad-hoc](labs/ad-hoc/index.md)   
 Lab 12: [Ansible playbook fundamentals](labs/playbook-fun/index.md)  
+Lab 12a: [Ansible playbooks - beyond the basics](labs/playbook-ext/index.md)  
 
 ### Day 5
 Lab 13: [Ansible roles](labs/roles/roles_intro.md)   
