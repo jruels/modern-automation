@@ -2,311 +2,388 @@
 
 ## The Scenario
 
-Your team manages a growing fleet of web servers. The playbooks that started life as a few tasks have grown into long files that mix web-server setup, user administration, host-name configuration, and banner deployment. Every time someone updates one area, they risk breaking another. New team members struggle to understand where things are defined.
+The playbook you built in the previous lab deploys a web server — but it is a one-size-fits-all solution. The team now needs to deploy the same Apache setup to two different environments:
 
-**Roles** are Ansible's answer: a standard directory layout that breaks a playbook into self-contained, reusable units. This lab converts a flat playbook into a role-based structure, and explains *why* each design decision exists so you can apply the same reasoning to your own automation.
+- **Production**: serves `prod.example.com`, document root `/var/www/prod`
+- **Staging**: serves `staging.example.com`, document root `/var/www/staging`
+
+Duplicating the playbook for each environment creates two files to keep in sync. Adding a third environment means a third file. Variables at the playbook level help, but every team that wants to run an Apache server still has to copy your playbook and understand every task in it.
+
+A **role** solves this by packaging the entire web server setup — tasks, handlers, templates, and defaults — into a single reusable unit. Callers pass in the variables they care about and the role handles everything else. One role, any number of environments.
+
+Along the way you will learn *why* each role feature exists, not just *what* it does.
 
 ### Prerequisites
 
-In VS Code, connected to your Ansible controller:
+In VS Code, create a new lab directory named `lab-roles-ext`:
 
 1. In the Explorer panel, right-click and select **New Folder**
-2. Name it `lab-roles`
+2. Name it `lab-roles-ext`
 3. Right-click the new folder and select **Open in Integrated Terminal**
 
----
-
-## Step 1 – Understand Why Roles Exist
-
-Before writing a single line, it is worth understanding the problem roles solve.
-
-Consider a playbook that installs Apache, configures the firewall, adds a login banner, manages the `/etc/hosts` file, and creates a system user. Putting all of that in one file creates several problems:
-
-| Problem | Effect |
-|---|---|
-| Everything in one file | A 300-line playbook is hard to read and harder to review |
-| Repeated logic across playbooks | Updating the banner means editing every playbook that sets it |
-| No clear ownership | Which team owns the user-management section vs. the web section? |
-| Hard to share | You cannot hand another team "just the user part" without copy-pasting |
-
-A **role** solves all of these by giving each concern its own directory with a predictable layout. Ansible knows where to look for tasks, templates, files, variables, and handlers — so all the wiring is automatic.
+You should have completed the extended playbook lab. The concepts used here (handlers, templates, loops, tags, `uri` verification) are introduced there.
 
 ---
 
-## Step 2 – Create the Role Directory Structure
+## Step 1 – Plan the Role Before Writing Anything
 
-Navigate into your lab directory and create the structure for a role called `baseline`:
+The role will be called `webserver`. Before creating files it is worth mapping out what the role will do and how the directory structure supports it.
 
-```
-cd /home/ansible/lab-roles
-mkdir -p baseline/{templates,tasks,files}
-echo "---" > baseline/tasks/main.yml
-```
+### What the role does
 
-**Why `baseline`?** The name communicates intent. A `baseline` role captures everything that *every* managed node should have, regardless of what else runs on it. Web servers get `baseline` plus a web role; database servers get `baseline` plus a database role. The name signals "apply this everywhere."
-
-**Why `mkdir -p baseline/{templates,tasks,files}`?** Ansible looks for content in specific subdirectories relative to the role root. The brace expansion creates three subdirectories in one command:
-
-| Subdirectory | What Ansible looks for there |
-|---|---|
-| `tasks/` | Task files (entry point is always `main.yml`) |
-| `templates/` | Jinja2 template files (`.j2`), used by the `template` module |
-| `files/` | Static files to be copied verbatim, used by the `copy` module |
-
-Other standard subdirectories (`handlers/`, `vars/`, `defaults/`, `meta/`) are optional and only needed when you use those features.
-
-**Why `echo "---" > baseline/tasks/main.yml`?** Ansible requires `tasks/main.yml` to exist in every role, even if it only imports other task files. Starting it with `---` (the YAML document marker) is a convention that makes YAML linters happy and signals "this is the entry point."
-
-Your directory tree should now look like this:
-
-```
-lab-roles/
-└── baseline/
-    ├── files/
-    ├── tasks/
-    │   └── main.yml
-    └── templates/
-```
-
----
-
-## Step 3 – Deploy the MOTD Template
-
-The **Message of the Day** (MOTD) is the text displayed to users when they log in over SSH. Deploying a consistent, managed MOTD across all servers is a common baseline requirement — it identifies the system and signals that access is monitored.
-
-### 3a – Copy the Template File
-
-```
-cp /home/ansible/automation-dev/labs/roles/resources/motd.j2 baseline/templates/
-```
-
-**Why copy rather than create from scratch?** The provided `motd.j2` uses `{{ ansible_hostname }}` — an Ansible *fact* that resolves to the managed node's hostname at run time. This single template produces a correctly labelled banner on every server without any per-host customisation.
-
-**Why a `.j2` extension?** `.j2` signals that the file is a **Jinja2** template. Jinja2 is the templating engine Ansible uses. Any `{{ variable }}` or `{% logic %}` blocks inside the file are expanded by Ansible before the file is written to the target. Naming the file `.j2` makes it immediately obvious to teammates that the file is not a static copy.
-
-### 3b – Create the MOTD Task File
-
-```
-vi baseline/tasks/deploy_motd.yml
-```
-
-Add the following content:
-
-```yaml
----
-- template:
-    src: motd.j2
-    dest: /etc/motd
-```
-
-Save and exit with **Escape** followed by `:wq`.
-
-**Why the `template` module instead of `copy`?** The `copy` module transfers a file exactly as it is. The `template` module processes Jinja2 expressions first, so `{{ ansible_hostname }}` in `motd.j2` becomes the real hostname of each target node. If you used `copy`, every node would literally display the text `{{ ansible_hostname }}` rather than its actual name.
-
-**Why `dest: /etc/motd`?** `/etc/motd` (Message of the Day) is the Linux standard for the file that SSH and login daemons display after a successful authentication. Writing here requires root privileges, which is why `become: yes` is set at the play level in the playbook you will create later.
-
-**Why put this in its own file (`deploy_motd.yml`) instead of directly in `main.yml`?** Separating task groups into individual files keeps each file focused on one concern. `main.yml` becomes a table of contents: it shows *what* the role does at a glance, and each imported file shows *how* one piece works. This also makes it easy to disable a section — just comment out the `import_tasks` line in `main.yml`.
-
-### 3c – Register the Task in `main.yml`
-
-```
-vi baseline/tasks/main.yml
-```
-
-Add:
-
-```yaml
-- name: configure motd
-  import_tasks: deploy_motd.yml
-```
-
-Save and exit with **Escape** followed by `:wq`.
-
-**Why `import_tasks` instead of `include_tasks`?** Both load an external task file, but they behave differently:
-
-| | `import_tasks` | `include_tasks` |
+| Concern | Task file | What it contains |
 |---|---|---|
-| When processed | At parse time (before the play runs) | At run time (when the task is reached) |
-| Tags and conditions | Inherited by every task in the file | Not inherited — must be applied individually |
-| Best for | Static, always-run task lists | Conditional or looped task loading |
+| Packages | `tasks/packages.yml` | Install httpd and firewalld, start and enable both |
+| Configuration | `tasks/configure.yml` | Deploy virtual host template, open firewall port |
+| Content | `tasks/content.yml` | Create document root, deploy a templated index page |
+| Verification | `tasks/verify.yml` | HTTP check that Apache is serving the right page |
 
-For a baseline role whose task files are always loaded, `import_tasks` is the right choice: tags applied to the `import_tasks` line automatically propagate to every task in the imported file.
+### What makes it reusable
+
+All values that differ between environments live in `defaults/main.yml`. A caller can override any of them without touching the role itself.
+
+### The full directory layout
+
+```
+lab-roles-ext/
+├── inventory
+├── site.yml
+└── webserver/
+    ├── defaults/
+    │   └── main.yml
+    ├── handlers/
+    │   └── main.yml
+    ├── tasks/
+    │   ├── main.yml
+    │   ├── packages.yml
+    │   ├── configure.yml
+    │   ├── content.yml
+    │   └── verify.yml
+    └── templates/
+        ├── vhost.conf.j2
+        └── index.html.j2
+```
+
+**Why plan the layout before writing code?** Roles follow Ansible's convention-over-configuration principle: Ansible discovers content by looking in specific subdirectories. If a template is in the wrong place Ansible will not find it and the play will fail with a confusing error. Sketching the layout first prevents that class of mistake.
 
 ---
 
-## Step 4 – Manage the `/etc/hosts` File
-
-Linux resolves short hostnames to IP addresses using `/etc/hosts` before it queries DNS. For internal tooling — monitoring agents, configuration management callbacks, inter-service communication — adding a canonical entry ensures resolution works even when DNS is unavailable or misconfigured.
-
-### 4a – Create the Hosts-Edit Task File
+## Step 2 – Create the Directory Structure
 
 ```
-vi baseline/tasks/edit_hosts.yml
+cd /home/ansible/lab-roles-ext
+mkdir -p webserver/{defaults,handlers,tasks,templates}
 ```
 
-Add the following content:
+**Why are there more subdirectories than in a basic role?** Each subdirectory corresponds to a role feature:
+
+| Subdirectory | What Ansible loads from it | When you need it |
+|---|---|---|
+| `tasks/` | Task files — entry point is `main.yml` | Always |
+| `templates/` | Jinja2 `.j2` files for the `template` module | When files need per-host values |
+| `defaults/` | Default variable values — lowest priority | When callers should be able to override variables |
+| `handlers/` | Handlers scoped to this role | When tasks in the role trigger service restarts |
+
+The `intro` lab only needed `tasks/`, `templates/`, and `files/` because the baseline role had no configurable variables and no handlers. The `webserver` role needs all four.
+
+---
+
+## Step 3 – Define Default Variables
+
+Create `webserver/defaults/main.yml`:
 
 ```yaml
 ---
-- lineinfile:
-    line: "{{ ansible_default_ipv4.address }} {{ inventory_hostname_short }}.example.com"
-    path: /etc/hosts
+http_port: 80
+site_name: "default.example.com"
+web_root: "/var/www/html"
+packages:
+  - httpd
+  - firewalld
 ```
 
-Save and exit with **Escape** followed by `:wq`.
+**Why `defaults/` instead of `vars/`?** Ansible has two places to define role variables, and they differ in priority:
 
-**Why `lineinfile` instead of `copy` or `template`?** `/etc/hosts` is a system-managed file that already contains entries Ansible did not create (the loopback address, for example). Replacing the entire file with `copy` or `template` would delete those entries and could break the system. `lineinfile` adds or updates exactly one line, leaving everything else intact. It is the right tool whenever you need to manage a single entry in a file you do not own outright.
+| Location | Priority | Designed for |
+|---|---|---|
+| `defaults/main.yml` | Lowest of all variable sources | Values a caller *should* override |
+| `vars/main.yml` | High — overrides most caller-supplied values | Internal constants the role relies on |
 
-**Why `ansible_default_ipv4.address`?** Ansible collects **facts** about each managed node at the start of a play. `ansible_default_ipv4.address` is the IP address of the node's primary network interface — the address other hosts on the network use to reach it. Using a fact rather than a hard-coded IP means this task works correctly across every node without any per-host configuration.
+`defaults/` is intentionally the weakest variable source so that anything the caller passes in — host variables, group variables, playbook `vars:` — automatically wins. Think of defaults as the role's *documented API*: "here are the knobs you can turn." `vars/` is for internal values the role author does not want callers to change.
 
-**Why `inventory_hostname_short`?** `inventory_hostname_short` is the portion of the inventory hostname before the first dot. If the inventory entry is `node1.corp.example.com`, the short name is `node1`. Appending `.example.com` gives a fully qualified domain name that fits a standard internal naming convention. You can adjust the domain suffix in a role variable if your environment uses a different zone.
-
-### 4b – Register in `main.yml`
-
-```
-vi baseline/tasks/main.yml
-```
-
-Add to the bottom of the file:
-
-```yaml
-- name: edit hosts file
-  import_tasks: edit_hosts.yml
-```
-
-Save and exit with **Escape** followed by `:wq`.
+**Why define `packages` as a list?** The `packages.yml` task file will loop over this list. If a caller needs to add a package (say, `mod_ssl` for HTTPS), they override the list rather than editing the role. The role stays untouched.
 
 ---
 
-## Step 5 – Create the `noc` User and Deploy an SSH Key
+## Step 4 – Define the Handlers
 
-The Network Operations Center (NOC) needs passwordless SSH access to every managed server so operators can log in quickly during an incident without hunting for credentials. Creating the `noc` user and deploying its authorised key is a perfect baseline task: it applies to every server, and it needs to happen before any application role runs.
-
-### 5a – Copy the Provided `authorized_keys` File
-
-```
-cp /home/ansible/automation-dev/labs/roles/resources/authorized_keys baseline/files/
-```
-
-**Why the `files/` subdirectory?** When the `copy` module receives a relative path (no `/` at the start), Ansible looks for the file in the role's `files/` directory automatically. You do not need to specify the full path in your task, which keeps the task clean and means the role is self-contained — the key travels with the role.
-
-### 5b – Create the User Deployment Task File
-
-```
-vi baseline/tasks/deploy_noc_user.yml
-```
-
-Add the following content:
+Create `webserver/handlers/main.yml`:
 
 ```yaml
 ---
-- user:
-    name: noc
+- name: Restart httpd
+  service:
+    name: httpd
+    state: restarted
 
-- file:
+- name: Reload firewalld
+  service:
+    name: firewalld
+    state: reloaded
+```
+
+**Why do handlers live inside the role rather than in the playbook?** When handlers are defined in the playbook, every playbook that uses the role has to copy those same handler definitions. Putting handlers inside `handlers/main.yml` makes the role self-contained: the tasks that notify the handlers and the handlers themselves ship together. A caller gets working restart behaviour for free.
+
+**Why two separate handlers?** Apache and firewalld require different operations to pick up changes. Apache needs a full restart when its configuration files change. Firewalld needs a reload (not a restart) to activate new permanent rules without dropping existing connections. Using separate handlers makes each trigger precise.
+
+---
+
+## Step 5 – Write the Packages Task File
+
+Create `webserver/tasks/packages.yml`:
+
+```yaml
+---
+- name: Install web server packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages }}"
+  tags: packages
+
+- name: Start and enable httpd
+  service:
+    name: httpd
+    state: started
+    enabled: yes
+  tags: packages
+
+- name: Start and enable firewalld
+  service:
+    name: firewalld
+    state: started
+    enabled: yes
+  tags: packages
+```
+
+**Why loop over `packages` from `defaults/`?** The loop variable `{{ item }}` is replaced by each entry in the `packages` list. Because `packages` is defined in `defaults/main.yml`, a caller can add or swap packages without touching the task file. The task file describes *how* to install packages; `defaults/main.yml` describes *which* packages to install.
+
+**Why `state: present` instead of `state: latest`?** `present` installs the package once and does nothing on subsequent runs if it is already installed — this is **idempotency**. `state: latest` would upgrade the package every time the playbook runs, which can introduce unplanned changes. In a role used across many servers, unexpected upgrades during a routine run are a reliability risk.
+
+**Why tags on every task?** Tags in a role work the same as in a playbook: `ansible-playbook site.yml --tags packages` runs only the package tasks across every host. This is useful for a phased rollout where you want to confirm packages are in place before touching configuration.
+
+---
+
+## Step 6 – Write the Configure Task File
+
+Create `webserver/tasks/configure.yml`:
+
+```yaml
+---
+- name: Deploy virtual host configuration
+  template:
+    src: vhost.conf.j2
+    dest: "/etc/httpd/conf.d/{{ site_name }}.conf"
+    mode: "0644"
+  notify: Restart httpd
+  tags: config
+
+- name: Open HTTP port in firewall
+  firewalld:
+    port: "{{ http_port }}/tcp"
+    permanent: yes
+    state: enabled
+  notify: Reload firewalld
+  tags: config
+```
+
+**Why `template` instead of `copy` for the virtual host file?** The virtual host configuration must contain the actual `site_name`, `web_root`, and `http_port` values for the environment being deployed. The `template` module processes Jinja2 expressions before writing the file, so `{{ site_name }}` in the template becomes `prod.example.com` for production and `staging.example.com` for staging. The `copy` module transfers files verbatim — it cannot substitute variables.
+
+**Why `notify: Restart httpd` here but `notify: Reload firewalld` for the firewall task?** The handlers are named exactly as defined in `handlers/main.yml`. Ansible matches notify strings to handler names at the role level first, then the play level. The handlers will run at the end of the play — and only if the corresponding task reported a change.
+
+**Why `port: "{{ http_port }}/tcp"` instead of `service: http`?** Using the variable means the role can serve on any port. The `service: http` shorthand hard-codes port 80. If `http_port` is later overridden to `8080`, the firewall rule updates automatically.
+
+---
+
+## Step 7 – Create the Virtual Host Template
+
+Create `webserver/templates/vhost.conf.j2`:
+
+```jinja2
+# Managed by Ansible – do not edit by hand
+<VirtualHost *:{{ http_port }}>
+    ServerName {{ site_name }}
+    DocumentRoot {{ web_root }}
+
+    <Directory {{ web_root }}>
+        Options -Indexes
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+    ErrorLog  /var/log/httpd/{{ site_name }}-error.log
+    CustomLog /var/log/httpd/{{ site_name }}-access.log combined
+</VirtualHost>
+```
+
+**Why the `# Managed by Ansible` comment?** This is a widely used convention that signals to anyone who logs in manually: editing this file by hand is pointless because the next Ansible run will overwrite it. It also makes it easy to grep across a fleet for files under configuration management.
+
+**Why `Options -Indexes`?** This directive disables directory listing. Without it, if the document root contains no `index.html`, Apache shows a browseable list of files — a common information disclosure vulnerability. Disabling it in the role template means every site the role creates is secure by default.
+
+**Why are all three configurable values (`http_port`, `site_name`, `web_root`) from `defaults/main.yml`?** The template never contains hard-coded environment-specific values. All three come from role defaults and are overridable by the caller. The same `.j2` file produces a correct configuration for any combination of values.
+
+---
+
+## Step 8 – Write the Content Task File
+
+Create `webserver/tasks/content.yml`:
+
+```yaml
+---
+- name: Ensure document root exists
+  file:
+    path: "{{ web_root }}"
     state: directory
-    path: /home/noc/.ssh
-    mode: "0600"
-    owner: noc
-    group: noc
+    mode: "0755"
+    owner: apache
+    group: apache
+  tags: content
 
-- copy:
-    src: authorized_keys
-    dest: /home/noc/.ssh/authorized_keys
-    mode: "0600"
-    owner: noc
-    group: noc
+- name: Deploy index page
+  template:
+    src: index.html.j2
+    dest: "{{ web_root }}/index.html"
+    mode: "0644"
+    owner: apache
+    group: apache
+  tags: content
 ```
 
-Save and exit with **Escape** followed by `:wq`.
+**Why `file` with `state: directory`?** When `web_root` is overridden to a non-default path such as `/var/www/staging`, that directory probably does not exist yet. The `file` module with `state: directory` creates it — and if it already exists with the correct permissions, it reports `ok` and moves on. This is idempotent: safe to run whether or not the directory already exists.
 
-**Why three separate tasks?** Each task has a single, clear responsibility: create the user, create the `.ssh` directory, copy the key. Separating them makes the play output easier to read — you see exactly which step succeeded or failed. It also makes each task idempotent on its own: if the user already exists, the `user` module reports `ok` and moves on without touching the directory or the key.
+**Why `owner: apache` and `group: apache`?** Apache runs as the `apache` user. Setting ownership explicitly ensures the process can read and write its own document root, and follows the principle of least privilege — the files are not owned by root.
 
-**Why `user: name=noc` without extra parameters?** The `user` module creates the user with sensible defaults (no login shell that accepts passwords, home directory under `/home/noc`) and is idempotent: if the user already exists it does nothing. Only add parameters when you need to deviate from the defaults.
-
-**Why `mode: "0600"` on the `.ssh` directory?** SSH enforces strict permission checks. If `~/.ssh` or `~/.ssh/authorized_keys` is world-readable or world-writable, SSH refuses to use the key and logs a warning. `0600` (owner read/write only) satisfies SSH's requirements and is the minimum needed for the key to work.
-
-**Why `owner: noc` and `group: noc` on both the directory and the file?** The `noc` user must be able to read its own key. Setting ownership explicitly prevents a situation where the files end up owned by `root` (because `become: yes` runs tasks as root) and the `noc` user cannot read them.
-
-### 5c – Register in `main.yml`
-
-```
-vi baseline/tasks/main.yml
-```
-
-Add to the bottom of the file:
-
-```yaml
-- name: set up noc user and key
-  import_tasks: deploy_noc_user.yml
-```
-
-Save and exit with **Escape** followed by `:wq`.
+**Why `template` for `index.html` instead of `copy`?** The index page will embed the hostname and IP address from Ansible facts so that each server's page identifies itself. A static `copy` cannot do this — a template can.
 
 ---
 
-## Step 6 – Review the Completed `main.yml`
+## Step 9 – Create the Index Page Template
 
-Your `baseline/tasks/main.yml` should now look like this:
+Create `webserver/templates/index.html.j2`:
 
-```yaml
+```jinja2
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ site_name }}</title>
+</head>
+<body>
+  <h1>{{ site_name }}</h1>
+  <p>Served by: <strong>{{ ansible_hostname }}</strong></p>
+  <p>Address: {{ ansible_default_ipv4.address }}</p>
+</body>
+</html>
+```
+
+**Why embed `ansible_hostname` and `ansible_default_ipv4.address`?** These are **facts** — values Ansible collects from the managed node at the start of every play. Using facts means the same template produces a unique, correctly labelled page on every server without any per-host customisation in the inventory or playbook. During troubleshooting, a page that identifies itself immediately tells you which node you are hitting.
+
+**Why is this useful beyond the lab?** In production, the same pattern is used for health-check endpoints, status pages, and "canary" pages that load balancers can query to confirm which node is serving a request.
+
 ---
-- name: configure motd
-  import_tasks: deploy_motd.yml
 
-- name: edit hosts file
-  import_tasks: edit_hosts.yml
+## Step 10 – Write the Verify Task File
 
-- name: set up noc user and key
-  import_tasks: deploy_noc_user.yml
-```
-
-**Why does `main.yml` only contain `import_tasks` lines?** This pattern turns `main.yml` into a *manifest*: one glance tells you everything the role does, without you needing to scroll through individual task details. The details live in the per-concern files. This is the role equivalent of a table of contents.
-
----
-
-## Step 7 – Create the Playbook That Uses the Role
-
-Copy the provided starting playbook and edit it to use the `baseline` role:
-
-```
-cp /home/ansible/automation-dev/labs/roles/resources/web.yml /home/ansible/lab-roles/
-vi /home/ansible/lab-roles/web.yml
-```
-
-Edit it to match the following:
+Create `webserver/tasks/verify.yml`:
 
 ```yaml
 ---
-- hosts: webservers
+- name: Verify web server is responding
+  uri:
+    url: "http://localhost:{{ http_port }}/index.html"
+    status_code: 200
+    return_content: yes
+  register: response
+  tags: verify
+
+- name: Confirm page contains site name
+  assert:
+    that: site_name in response.content
+    fail_msg: "Page did not contain '{{ site_name }}' — check the virtual host configuration"
+    success_msg: "Page confirmed: '{{ site_name }}' found in response"
+  tags: verify
+```
+
+**Why two tasks instead of one?** The `uri` task checks that Apache is running and responding with HTTP 200. The `assert` task checks that the *correct* virtual host is serving the request. A server could respond with 200 but serve the wrong site's content if the virtual host configuration is misconfigured. Two assertions catch two different failure modes.
+
+**Why `register: response`?** `register` saves the full result of a task into a variable. The `assert` task can then inspect `response.content` — the raw body of the HTTP response — to confirm it contains the expected `site_name`. Without `register`, the response body is discarded after the `uri` task.
+
+**Why `return_content: yes`?** By default the `uri` module only checks the status code and discards the body. `return_content: yes` instructs it to capture the response body and store it in `response.content` so the `assert` task can inspect it.
+
+**Why `http://localhost:{{ http_port }}/index.html`?** The port comes from `http_port` so the verification URL is automatically correct whether the role is deployed on port 80 or an overridden port. Hard-coding `80` here would silently skip verification if `http_port` were overridden.
+
+---
+
+## Step 11 – Write `tasks/main.yml`
+
+Create `webserver/tasks/main.yml`:
+
+```yaml
+---
+- name: Install and start services
+  import_tasks: packages.yml
+
+- name: Configure virtual host and firewall
+  import_tasks: configure.yml
+
+- name: Deploy web content
+  import_tasks: content.yml
+
+- name: Verify deployment
+  import_tasks: verify.yml
+```
+
+**Why does `main.yml` only import other files?** `main.yml` acts as a manifest: one glance shows the four phases of the role in order. The details live in the per-phase files. This structure scales well — you can add a fifth phase (say, `security.yml` for SELinux context fixes) by adding one line here, without touching any existing file.
+
+**Why this order?** Services must be running before the firewall rule matters; the document root must exist before content is deployed; all of the above must be complete before verification can succeed. The order encodes these dependencies.
+
+---
+
+## Step 12 – Write the Playbook
+
+The real payoff of a well-designed role is how simple the playbook becomes. Create `site.yml`:
+
+```yaml
+---
+- name: Deploy production web server
+  hosts: node1
   become: yes
   roles:
-    - baseline
-  tasks:
-    - name: install httpd
-      yum:
-        name: httpd
-        state: latest
-    - name: start and enable httpd
-      service:
-        name: httpd
-        state: started
-        enabled: yes
+    - role: webserver
+      vars:
+        site_name: "prod.example.com"
+        web_root: "/var/www/prod"
+
+- name: Deploy staging web server
+  hosts: node2
+  become: yes
+  roles:
+    - role: webserver
+      vars:
+        site_name: "staging.example.com"
+        web_root: "/var/www/staging"
 ```
 
-Save and exit with **Escape** followed by `:wq`.
+**Why two plays in one playbook instead of two playbooks?** A single `site.yml` is the source of truth for the entire site. Running it deploys both environments in one command. Running `--limit node1` deploys only production. This is the standard pattern in Ansible: one playbook describes the whole system; inventory groups and `--limit` control scope.
 
-**Why `roles:` before `tasks:`?** Ansible always runs roles before the `tasks:` block, regardless of the order in the file. Listing `roles:` first makes this explicit and signals to the reader that the baseline configuration is applied as a foundation before the application-specific tasks run. Think of it as: "configure the server, then deploy the application."
+**Why pass `vars:` on the `role:` key?** Variables passed here override the role's `defaults/main.yml` values for this play only. The role itself is unchanged. Production gets `/var/www/prod`; staging gets `/var/www/staging`; the role knows nothing about either — it just uses whatever `web_root` it receives. This is the role interface in action.
 
-**Why keep the web tasks in the playbook rather than creating a second role?** For a two-task web setup (install, start/enable) an inline task block is appropriate. Roles are worth the overhead when a concern has multiple task files, templates, handlers, or variables. Premature extraction into a role adds structure without adding clarity.
-
-**Why `state: latest` for `httpd` here?** The introductory lab uses `latest` to keep the example simple. In a production environment you would pin to a specific version (`state: present`) to avoid unexpected upgrades during routine playbook runs — the same idempotency reasoning from the playbook lab applies here.
+**Why is `http_port` not overridden?** Both environments use port 80, so the default value of `80` from `defaults/main.yml` is correct for both plays. Only override what differs. If staging were later moved to port 8080, you would add `http_port: 8080` to the staging play — one line, no role changes needed.
 
 ---
 
-## Step 8 – Create the Inventory
+## Step 13 – Create the Inventory
 
-Create an `inventory` file in `lab-roles/`:
+Create an `inventory` file in `lab-roles-ext/`:
 
 ```
 [webservers]
@@ -314,105 +391,87 @@ node1 ansible_host=<IP of TargetNode-1 from /home/ansible/inventory/inventory.ya
 node2 ansible_host=<IP of TargetNode-2 from /home/ansible/inventory/inventory.yaml>
 ```
 
-**Why a `webservers` group?** The role is designed to run on web servers. Targeting `webservers` rather than `all` means that adding a database node to the inventory later will not accidentally receive Apache. Inventory groups are the primary mechanism for controlling *where* automation runs — always be explicit.
-
 ---
 
-## Step 9 – Review the Final Directory Structure
+## Step 14 – Review the Final Directory Structure
 
-Before running, confirm your layout looks like this:
+Confirm your layout matches this before running:
 
 ```
-lab-roles/
+lab-roles-ext/
 ├── inventory
-├── web.yml
-└── baseline/
-    ├── files/
-    │   └── authorized_keys
+├── site.yml
+└── webserver/
+    ├── defaults/
+    │   └── main.yml
+    ├── handlers/
+    │   └── main.yml
     ├── tasks/
     │   ├── main.yml
-    │   ├── deploy_motd.yml
-    │   ├── edit_hosts.yml
-    │   └── deploy_noc_user.yml
+    │   ├── packages.yml
+    │   ├── configure.yml
+    │   ├── content.yml
+    │   └── verify.yml
     └── templates/
-        └── motd.j2
+        ├── vhost.conf.j2
+        └── index.html.j2
 ```
 
-**Why does this structure matter?** Ansible discovers role content by convention, not configuration. If a template is in `baseline/templates/`, the `template` module finds it automatically when `src: motd.j2` is specified. If you put it in `baseline/files/` by mistake, Ansible would not find it and the play would fail. Understanding the convention prevents confusing path errors.
+**Why verify the layout before running?** Ansible resolves role content by convention. A file in the wrong subdirectory produces a `file not found` error at runtime rather than a linting error at write time. Checking the structure first is faster than decoding a runtime failure.
 
 ---
 
-## Step 10 – Run the Playbook
+## Step 15 – Run the Playbook
 
-Execute the playbook:
+Execute the full site deployment:
 
 ```
-ansible-playbook -i inventory web.yml
+ansible-playbook -i inventory site.yml
 ```
 
-Watch the output. You will see Ansible work through the role tasks before the inline tasks:
+Watch the output. Because there are two plays, you will see Ansible complete the full role for `node1` (production) and then repeat it for `node2` (staging):
 
-1. **MOTD template** — the rendered banner is written to each node
-2. **Hosts file entry** — each node's IP and short name are added to `/etc/hosts`
-3. **NOC user** — the user is created, the `.ssh` directory is set up, and the key is deployed
-4. **Install httpd** — Apache is installed from the inline `tasks:` block
-5. **Start and enable httpd** — Apache is started and set to launch on boot
+- Packages are installed on both nodes
+- Each node gets a virtual host configuration file named after its `site_name`
+- Each node gets a document root at its `web_root` path
+- Each node gets an `index.html` embedding its own hostname and IP
+- The `assert` task confirms each page contains the correct `site_name`
+
+The handlers (`Restart httpd`, `Reload firewalld`) fire at the end of each play, after all tasks in that play have run.
 
 ---
 
-## Step 11 – Verify the Results
+## Step 16 – Explore Tags and Idempotency
 
-### Confirm the MOTD
-
-Log in to `node1`:
+### Run a single phase across both environments
 
 ```
-ssh <node1's IP address>
+ansible-playbook -i inventory site.yml --tags content
 ```
 
-You should see the ASCII art banner with `node1`'s hostname filled in. This confirms the template module resolved `{{ ansible_hostname }}` correctly for that specific node.
+Only the content tasks run. This is useful when you have updated a template and want to redeploy pages without reinstalling packages or changing configuration.
 
-**Why does the hostname appear in the banner?** The `template` module collected the `ansible_hostname` fact from `node1` during the play's fact-gathering phase and substituted it before writing the file. On `node2`, the same template would produce a banner showing `node2`.
+### Confirm idempotency
 
-### Confirm the `noc` User
-
-While still on `node1`, run:
+Run the full playbook a second time without changing anything:
 
 ```
-id noc
+ansible-playbook -i inventory site.yml
 ```
 
-You should see output like:
+Every task should report `ok`. Neither handler should fire. This is expected: the role already brought both nodes to desired state. Idempotency means the role is safe to run on a schedule (for drift detection) or in a pipeline (for continuous deployment).
+
+### Change a variable and observe the handler
+
+Edit `site.yml` and change the production `site_name` to `"prod2.example.com"`. Run:
 
 ```
-uid=1001(noc) gid=1001(noc) groups=1001(noc)
+ansible-playbook -i inventory site.yml --limit node1 --tags config
 ```
 
-This confirms the user was created. To confirm the key was deployed:
+Because the virtual host filename and contents depend on `site_name`, the `template` task reports `changed` and the `Restart httpd` handler fires. The staging play is skipped entirely because of `--limit node1`. This demonstrates two role benefits at once: variable overrides and handler-driven restarts.
 
-```
-sudo cat /home/noc/.ssh/authorized_keys
-```
-
-The output should match the public key in the `authorized_keys` file you copied into the role.
-
-### Confirm Idempotency
-
-Return to the controller and run the playbook again without changing anything:
-
-```
-ansible-playbook -i inventory web.yml
-```
-
-Every task should report `ok` — no `changed`. This confirms:
-
-- `template`: the file content matches; no write needed
-- `lineinfile`: the hosts entry already exists; no change
-- `user`: the `noc` user already exists; no change
-- `file`: the `.ssh` directory already has the correct permissions; no change
-- `copy`: `authorized_keys` is already in place; no change
-
-**Why does idempotency matter for roles?** Roles are designed to be applied repeatedly — on new servers during provisioning, on existing servers after a policy change, and by scheduled runs that enforce desired state. If a role made changes every time it ran, operators could not tell from the output whether something genuinely changed. An all-`ok` run is a clean bill of health.
+Revert `site_name` to `"prod.example.com"` and re-run to restore state.
 
 ---
 
@@ -420,19 +479,19 @@ Every task should report `ok` — no `changed`. This confirms:
 
 | Concept | What it solves |
 |---|---|
-| **Roles** | Break large playbooks into focused, reusable units with a predictable layout |
-| **`tasks/main.yml` as manifest** | One file shows what the role does; individual files show how each piece works |
-| **`import_tasks`** | Statically includes a task file so tags and conditions propagate automatically |
-| **`template` module** | Deploys files with dynamic content resolved per-host using Jinja2 and facts |
-| **`lineinfile` module** | Manages a single line in a shared file without overwriting other content |
-| **`user` + `file` + `copy`** | Three-step pattern to create a user, set up `.ssh`, and deploy an authorised key |
-| **`roles:` before `tasks:`** | Makes execution order explicit: foundation first, application second |
+| **`defaults/main.yml`** | Defines the role's public interface — values callers can override |
+| **`handlers/main.yml`** | Scopes service restart logic to the role so callers do not need to define it |
+| **Per-concern task files** | Each file has one responsibility; `main.yml` is a readable manifest |
+| **Templates with role variables** | One template produces correct output for any environment |
+| **`import_tasks`** | Tags and conditions propagate into imported files automatically |
+| **`vars:` on `role:`** | Override defaults per-play to deploy the same role to different environments |
+| **`register` + `assert`** | Verify not just that a service is running, but that it is serving the right content |
 | **Idempotency** | Safe to run repeatedly; `ok` means desired state is already met |
 
 ---
 
 ## Conclusion
 
-You have converted a flat playbook into a role-based structure that separates three distinct concerns — login banners, host-name resolution, and user management — into individual, testable task files. The `baseline` role can now be applied to any group of servers by adding one line to a playbook, and each concern can be maintained independently without risk of breaking the others.
+You have built a `webserver` role that encapsulates a complete Apache deployment — packages, handlers, virtual host configuration, document root, templated content, and end-to-end verification. The same role deploys two distinct environments from a single `site.yml` by overriding three default variables.
 
-The patterns used here — a manifest `main.yml`, per-concern task files, templates for dynamic content, `lineinfile` for shared files, and explicit ownership for sensitive files — appear in virtually every production Ansible role. Congratulations!
+The features practiced here — `defaults/`, `handlers/`, per-concern task files, templates, variable overrides, and two-step verification — are the building blocks of every production-grade Ansible role. Congratulations!
