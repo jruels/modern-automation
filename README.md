@@ -33,6 +33,7 @@ Lab 12a: [Ansible playbooks - beyond the basics](labs/playbook-ext/index.md)
 
 ### Day 5
 Lab 13: [Ansible roles](labs/roles/roles_intro.md)   
+Lab 13a: [Ansible roles - extended](labs/roles/roles_extended.md)   
 Lab 14: [AAP inventory and credentials](labs/aap-setup/index_shared.md)   
 Lab 15: [AAP projects and jobs](labs/aap-projects-templates-jobs/index.md)   
 Lab 16: [Ansible Playbook Error Handling](labs/error-handling/index.md)   

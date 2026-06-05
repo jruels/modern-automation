@@ -1,9 +1,8 @@
 # Ansible Roles
 
-There are two choices available for this lab. One is step-by-step - copy/paste, and the other is an intermediate objective based scenario where you have to figure out the solution on your own.
+There are three versions of this lab available. Choose the one that fits your experience level.
 
-Choose wisely :) 
-
-[Ansible Roles - Introductory](roles_intro.md)   
-[Ansible Roles - Intermediate](roles_intermediate.md)
+[Ansible Roles - Extended](roles_extended.md) — Step-by-step with explanations of *why* each decision is made  
+[Ansible Roles - Introductory](roles_intro.md) — Step-by-step copy/paste  
+[Ansible Roles - Intermediate](roles_intermediate.md) — Objective-based: figure out the solution on your own
 
