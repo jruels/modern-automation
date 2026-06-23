@@ -123,11 +123,6 @@ terraform {
       name = "tf-vault-qa-{your-initials}-{todays-date}"
     }
   }
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-    }
-  }
 }
 ```
 
