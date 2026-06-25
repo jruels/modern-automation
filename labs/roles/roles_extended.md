@@ -297,9 +297,16 @@ Create `webserver/tasks/verify.yml`:
 
 ```yaml
 ---
+- name: Register the site name on the managed host
+  lineinfile:
+    path: /etc/hosts
+    line: "127.0.0.1 {{ site_name }}"
+    state: present
+  tags: verify
+
 - name: Verify web server is responding
   uri:
-    url: "http://localhost:{{ http_port }}/index.html"
+    url: "http://{{ site_name }}:{{ http_port }}/index.html"
     status_code: 200
     return_content: yes
   register: response
@@ -313,13 +320,15 @@ Create `webserver/tasks/verify.yml`:
   tags: verify
 ```
 
+**Why register the site name with `lineinfile` first?** The verification now reaches the server by its `site_name` (`prod.example.com`) instead of `localhost`. For a name to resolve it must exist somewhere — here we add a `127.0.0.1 {{ site_name }}` entry to `/etc/hosts` on the managed node so the mapping is in place before the `uri` task runs. Because the `uri` check runs *on the managed node*, the node only needs to resolve `site_name` to itself (`127.0.0.1`) for the request to reach its own Apache. `lineinfile` is idempotent: it adds the line only if it is not already present, so re-running the role does not create duplicate entries. `become: yes` is already set at the play level, which gives this task the root access needed to edit `/etc/hosts`.
+
 **Why two tasks instead of one?** The `uri` task checks that Apache is running and responding with HTTP 200. The `assert` task checks that the *correct* virtual host is serving the request. A server could respond with 200 but serve the wrong site's content if the virtual host configuration is misconfigured. Two assertions catch two different failure modes.
 
 **Why `register: response`?** `register` saves the full result of a task into a variable. The `assert` task can then inspect `response.content` — the raw body of the HTTP response — to confirm it contains the expected `site_name`. Without `register`, the response body is discarded after the `uri` task.
 
 **Why `return_content: yes`?** By default the `uri` module only checks the status code and discards the body. `return_content: yes` instructs it to capture the response body and store it in `response.content` so the `assert` task can inspect it.
 
-**Why `http://localhost:{{ http_port }}/index.html`?** The port comes from `http_port` so the verification URL is automatically correct whether the role is deployed on port 80 or an overridden port. Hard-coding `80` here would silently skip verification if `http_port` were overridden.
+**Why `http://{{ site_name }}:{{ http_port }}/index.html`?** Verifying by `site_name` exercises the request path the way a real client would: it forces name resolution and makes Apache select the virtual host whose `ServerName` matches `site_name`. Hitting `localhost` would only confirm that *something* answers on the port — it would not prove that the named virtual host you just deployed is the one serving the page. The port still comes from `http_port`, so the URL stays correct whether the role is deployed on port 80 or an overridden port; hard-coding `80` would silently skip verification if `http_port` were overridden.
 
 ---
 
