@@ -344,8 +344,12 @@ Create `webserver/tasks/main.yml`:
 - name: Configure virtual host and firewall
   import_tasks: configure.yml
 
+
 - name: Deploy web content
   import_tasks: content.yml
+
+- name: Flush handlers 
+  meta: flush_handlers
 
 - name: Verify deployment
   import_tasks: verify.yml
