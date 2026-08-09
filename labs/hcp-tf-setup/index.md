@@ -148,8 +148,8 @@ To allow Terraform to authenticate with AWS, you need to add your AWS credential
 - Go to the **Variables** page.
 - In the **Workspace variables** section, click **+ Add variable**.
 - Select the **Environment variable** radio button.
-- Set the key to `AWS_ACCESS_KEY_ID` and the value to your AWS access key ID. Mark it as **Sensitive** and click **Add variable**.
-- Click **+ Add variable** again, set the key to `AWS_SECRET_ACCESS_KEY` and the value to your AWS secret access key. Mark it as **Sensitive** and click **Add variable**.
+- Set the key to `AWS_ACCESS_KEY_ID` and the value to the AWS access key ID provided by your instructor. Mark it as **Sensitive** and click **Add variable**.
+- Click **+ Add variable** again, set the key to `AWS_SECRET_ACCESS_KEY` and the value to the AWS secret access key provided by your instructor. Mark it as **Sensitive** and click **Add variable**.
 
 Your workspace is now configured with the necessary AWS credentials, which will be used by Terraform to authenticate with AWS and provision resources.
 
