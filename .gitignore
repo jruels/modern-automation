@@ -1,4 +1,13 @@
+# macOS metadata files
 *.DS*
+.DS_Store
+._*
+
+# Class credential spreadsheets - these contain live AWS access keys
+# and must never be committed to this repository.
+*.xlsx
+*.xls
+*.csv
 
 # Local .terraform directories
 .terraform/
