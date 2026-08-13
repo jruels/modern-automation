@@ -1,15 +1,46 @@
 # Lab Setup 
 
-# Clone the lab repo in VS Code
+# Move the lab repo into your repos folder
 
-### Step 1: Clone the repo
+You already cloned the `modern-automation` repo during the **tf-publish-module** lab. Instead of cloning it again, move that copy into `C:\Users\tekstudent\Downloads\repos` so the rest of the labs can find it.
+
+### Step 1: Close all Visual Studio Code windows
+
+Windows will not move a folder that another program has open, so close **every** VS Code window before you start.
+
+1. In each open VS Code window, click **File** > **Exit** (or click the **X** in the top right corner).
+2. Make sure no VS Code windows remain on the taskbar. If one reopens, close it again.
+
+### Step 2: Move the folder with Windows File Explorer
+
+1. Press **Windows key + E** to open **File Explorer**.
+2. In the address bar at the top, type the path below and press **Enter**:
+
+   ```plaintext
+   C:\Users\tekstudent\Downloads\terraform\tf-publish-module
+   ```
+
+   > If you cloned the repo somewhere else, browse to that location instead. You are looking for the folder named `modern-automation`.
+
+3. Click once on the **`modern-automation`** folder to select it.
+4. Press **Ctrl + X** to cut the folder.
+5. In the address bar, type the destination path below and press **Enter**:
+
+   ```plaintext
+   C:\Users\tekstudent\Downloads\repos
+   ```
+
+   > If the `repos` folder does not exist, browse to `C:\Users\tekstudent\Downloads`, right-click in the empty space, choose **New** > **Folder**, and name it `repos`. Then open it.
+
+6. Press **Ctrl + V** to paste the folder.
+7. Confirm you now see `C:\Users\tekstudent\Downloads\repos\modern-automation` in File Explorer.
+
+### Step 3: Open the repo in VS Code and pull the latest changes
 
 1. Open a new Visual Studio Code window.
-2. In Visual Studio Code, click **Clone Repository** and paste `https://github.com/jruels/modern-automation`
-3. Hit **Enter**, and in the pop-up window, browse to `C:\Users\tekstudent\Downloads\repos`
-4. Click **Select as repository destination**
-5. When prompted to open the cloned repo, choose **Open**.
-6. After opening the folder, click the third icon in the left toolbar for source control. Next to **changes**, click the ellipses (three dots) and choose **pull**.
+2. Click **File** > **Open Folder...**, browse to `C:\Users\tekstudent\Downloads\repos\modern-automation`, and click **Select Folder**.
+3. If prompted about trusting the authors of the folder, choose **Yes, I trust the authors**.
+4. Click the third icon in the left toolbar for source control. Next to **changes**, click the ellipses (three dots) and choose **pull**.
 
 ## Set up a remote SSH session in Visual Studio Code.   
 
