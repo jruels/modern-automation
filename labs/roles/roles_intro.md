@@ -111,7 +111,7 @@ Inside that directory, create a sub-folder `baseline`
    - file:
         state: directory
         path: /home/noc/.ssh
-        mode: 0600
+        mode: 0755
         owner: noc
         group: noc
    - copy:
