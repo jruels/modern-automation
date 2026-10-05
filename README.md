@@ -4,7 +4,7 @@ This site includes the labs for the Modern Automation with Terraform and Ansible
 
 ## Labs
 
-[Lab information](https://docs.google.com/spreadsheets/d/1l3lClWQsXvbVFnHE4PQ_Y2bGYWaOuegu5ff5ikz0O7s/edit?usp=sharing)
+[Lab information](https://docs.google.com/spreadsheets/d/1j2h-0HVhmgU8k7YLeoHrNN16kS86CjAG9aWBhQ4-NDI/edit?gid=0#gid=0)
 
 ### Day 1
 Lab 1: [Python guessing game](labs/py_guessing-game/index.md)    
