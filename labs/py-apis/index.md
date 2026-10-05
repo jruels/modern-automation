@@ -293,7 +293,7 @@ Learn how to test different authentication methods using both Postman and Python
 **Postman:**
 Install Postman from [here](https://dl.pstmn.io/download/latest/win64)
 
-1. Create a new request to `https://httpcan.org/basic-auth/user/pass`
+1. Create a new request to `https://httpbingo.org/basic-auth/user/pass`
 2. Under the "Authorization" tab, select "Basic Auth"
 3. Enter:
    - Username: `user`
@@ -303,9 +303,11 @@ Install Postman from [here](https://dl.pstmn.io/download/latest/win64)
 ```python
 import requests
 
+BASE = 'https://httpbingo.org'
+
 # Basic Authentication
 response = requests.get(
-    'https://httpcan.org/basic-auth/user/pass',
+    f'{BASE}/basic-auth/user/pass',
     auth=('user', 'pass')
 )
 print("Basic Auth Response:", response.json())
@@ -313,7 +315,7 @@ print("Basic Auth Response:", response.json())
 
 #### Bearer Token
 **Postman:**
-1. Create a new request to `https://httpcan.org/bearer`
+1. Create a new request to `https://httpbingo.org/bearer`
 2. Under the "Authorization" tab, select "Bearer Token"
 3. Enter token: `my-test-token`
 
@@ -321,12 +323,14 @@ print("Basic Auth Response:", response.json())
 ```python
 import requests
 
+BASE = 'https://httpbingo.org'
+
 # Bearer Token Authentication
 headers = {
     'Authorization': 'Bearer my-test-token'
 }
 response = requests.get(
-    'https://httpcan.org/bearer',
+    f'{BASE}/bearer',
     headers=headers
 )
 print("Bearer Token Response:", response.json())
@@ -334,7 +338,7 @@ print("Bearer Token Response:", response.json())
 
 #### API Key
 **Postman:**
-1. Create a new request to `https://httpcan.org/headers`
+1. Create a new request to `https://httpbingo.org/headers`
 2. Under the "Headers" tab, add:
    - Key: `X-API-Key`
    - Value: `my-api-key-123`
@@ -343,12 +347,14 @@ print("Bearer Token Response:", response.json())
 ```python
 import requests
 
+BASE = 'https://httpbingo.org'
+
 # API Key in Headers
 headers = {
     'X-API-Key': 'my-api-key-123'
 }
 response = requests.get(
-    'https://httpcan.org/headers',
+    f'{BASE}/headers',
     headers=headers
 )
 print("Headers Response:", response.json())
@@ -358,13 +364,15 @@ print("Headers Response:", response.json())
 ```python
 import requests
 
+BASE = 'https://httpbingo.org'
+
 def test_auth_methods():
     print("\n=== Testing Different Auth Methods ===\n")
 
     # Test Basic Auth
     try:
         response = requests.get(
-            'https://httpcan.org/basic-auth/user/pass',
+            f'{BASE}/basic-auth/user/pass',
             auth=('user', 'pass')
         )
         print("Basic Auth Test:")
@@ -377,7 +385,7 @@ def test_auth_methods():
     try:
         headers = {'Authorization': 'Bearer my-test-token'}
         response = requests.get(
-            'https://httpcan.org/bearer',
+            f'{BASE}/bearer',
             headers=headers
         )
         print("Bearer Token Test:")
@@ -390,7 +398,7 @@ def test_auth_methods():
     try:
         headers = {'X-API-Key': 'my-api-key-123'}
         response = requests.get(
-            'https://httpcan.org/headers',
+            f'{BASE}/headers',
             headers=headers
         )
         print("API Key Test:")
@@ -404,6 +412,8 @@ if __name__ == "__main__":
 ```
 
 **Note:** In Postman, you can click the "Code" button (</>) to see the Python code for any request you've configured.
+
+**Note:** `BASE` is pulled out as a constant so the whole exercise can be pointed at a different test server with one edit. `https://httpbin.org` exposes the same three endpoints if httpbingo is ever unavailable — the only difference is that httpbingo returns each header value as a list (`"X-Api-Key": ["my-api-key-123"]`).
 
 ### Step 11: Asynchronous Programming with asyncio
 Learn how to make concurrent API requests using Python's asyncio and aiohttp.
