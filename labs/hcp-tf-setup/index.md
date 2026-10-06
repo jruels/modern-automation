@@ -17,11 +17,13 @@ HCP Terraform runs Terraform operations and stores state remotely, providing a s
 
 ### Hands-On Tasks
 
-#### 1. Confirm GitHub Account 
+#### 1. Log into GitHub Account 
 
-The instructor has logged VS Code and Google Chrome into GitHub using the class accounts. 
+Log into VS Code and Google Chrome using the GitHub accounts from the spreadsheet. 
 
-1. Open the Google Chrome browser and confirm you are logged into [GitHub](https://github.com). 
+1. Open the Google Chrome browser and log into [GitHub](https://github.com).
+2. Open the 2FA page from the spreadsheet and use the page password to log in.
+3. Click the 2FA code to copy it and use it to log into GitHub.
 
 #### 2. Fork and Clone the Example Terraform Configuration
 
