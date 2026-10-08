@@ -31,6 +31,17 @@ node2 ansible_host=<IP of TargetNode-2 from /home/ansible/inventory/inventory.ya
 ```
 
 
+## Prepare the target nodes
+
+Run the following ad-hoc command once before continuing:
+
+```
+ansible -i inventory web -b -m shell -a 'bootc usr-overlay; rm -f /run/ostree-booted'
+```
+
+> **Note:** This step is required for the version of CentOS running on the target nodes. It allows packages to be installed normally.
+
+
 
 ## Create a Playbook 
 
