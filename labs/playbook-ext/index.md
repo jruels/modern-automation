@@ -119,7 +119,7 @@ Add the `handlers` block to `web.yml`, at the same indentation level as `tasks`:
     - name: Reload firewalld
       service:
         name: firewalld
-        state: reloaded
+        state: restarted
 ```
 
 **Why handlers instead of a `service` task with `state: restarted`?** A regular restart task runs every time the playbook runs, even when nothing changed. Handlers only trigger on actual changes, so they make your playbook safe to run repeatedly.
@@ -279,7 +279,7 @@ Your finished `web.yml` should look like this:
     - name: Reload firewalld
       service:
         name: firewalld
-        state: reloaded
+        state: restarted
 
   tasks:
 
