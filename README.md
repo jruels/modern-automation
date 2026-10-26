@@ -5,14 +5,14 @@
 Each delivery has its own credentials sheet — open the one for **your** class (date and instructor).
 
 <!-- iis-class-links:start -->
-- **Modern Automation with Terraform and Ansible (10/26)**: [class sheet]([https://docs.google.com/spreadsheets/d/1gPE9wbA1h7kBL-9TMX2YuImOnb1ArBrYDbAA7TuS7AM/edit](https://docs.google.com/spreadsheets/d/1gPE9wbA1h7kBL-9TMX2YuImOnb1ArBrYDbAA7TuS7AM/edit?usp=sharing))   <!-- cohort:mata-2026-oct26 -->
+- **Modern Automation with Terraform and Ansible (10/26)**: [class link](https://docs.google.com/spreadsheets/d/1gPE9wbA1h7kBL-9TMX2YuImOnb1ArBrYDbAA7TuS7AM/edit?usp=sharing)  <!-- cohort:mata-2026-oct26 -->
 <!-- iis-class-links:end -->
 
 This site includes the labs for the Modern Automation with Terraform and Ansible class.
 
 ## Labs
 
-[Lab information]([https://docs.google.com/spreadsheets/d/1j2h-0HVhmgU8k7YLeoHrNN16kS86CjAG9aWBhQ4-NDI/edit?gid=0#gid=0](https://docs.google.com/spreadsheets/d/1gPE9wbA1h7kBL-9TMX2YuImOnb1ArBrYDbAA7TuS7AM/edit?usp=sharing))
+[lab information](https://docs.google.com/spreadsheets/d/1gPE9wbA1h7kBL-9TMX2YuImOnb1ArBrYDbAA7TuS7AM/edit?usp=sharing) 
 
 ### Day 1
 Lab 1: [Python guessing game](labs/py_guessing-game/index.md)    
