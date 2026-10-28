@@ -110,7 +110,7 @@ Workspaces in HCP Terraform are used to organize and manage collections of infra
 
 In VS Code, open C:\users\tekstudent\Downloads\repos\learn-terraform-variables.
 
-Edit your `main.tf` file to include a `cloud` block specifying your HCP Terraform organization and the desired workspace name. This tells Terraform where to create and manage your workspace.
+Edit your `main.tf` file to include a `cloud` block specifying your HCP Terraform organization and the desired workspace name. This tells Terraform where to create and manage your workspace. **Keep your other terraform cloud block**.
 
 REMEMBER TO REPLACE `{your-initials}` and `{todays-date}` with actual values. 
 e.g `tf-vault-qa-jrs-20260603`
@@ -122,6 +122,7 @@ terraform {
   cloud {
     organization = "policy-as-code-training"
     workspaces {
+      project = "policy-as-code"
       name = "tf-vault-qa-{your-initials}-{todays-date}"
     }
   }
