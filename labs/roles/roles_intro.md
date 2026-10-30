@@ -192,9 +192,14 @@ node2 ansible_host=<IP of TargetNode-2 from /home/ansible/inventory/inventory.ya
 
 ### Check Our Work
 
+
+
 1. Log in to `node1` :
 
-   `ssh <node1's ip address> `
+  ```
+   chmod 600 ~/automation-dev/labs/roles/resources/keys/noc_id_rsa
+   ssh noc@<node1 ip address> -i ~/automation-dev/labs/roles/resources/keys/noc_id_rsa
+   ```
 
    We should see a new MOTD, so we know that play worked.
 
