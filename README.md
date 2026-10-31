@@ -1,13 +1,5 @@
 # Modern Automation with Terraform and Ansible
 
-## Class links
-
-Each delivery has its own credentials sheet — open the one for **your** class (date and instructor).
-
-<!-- iis-class-links:start -->
-- **Modern Automation with Terraform and Ansible (10/26)**: [class link](https://docs.google.com/spreadsheets/d/1gPE9wbA1h7kBL-9TMX2YuImOnb1ArBrYDbAA7TuS7AM/edit?usp=sharing)  <!-- cohort:mata-2026-oct26 -->
-<!-- iis-class-links:end -->
-
 This site includes the labs for the Modern Automation with Terraform and Ansible class.
 
 ## Labs
